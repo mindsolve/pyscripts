@@ -1,0 +1,41 @@
+version: 0.0.1.{build}
+pull_requests:
+  do_not_increment_build_number: true
+skip_branch_with_pr: true
+image: Visual Studio 2015
+environment:
+  matrix:
+  - PYTHON: C:\Python37-x64
+    TEST_PIP_INSTALL: true
+init:
+  - cmd: SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+  - cmd: SET PYTHON_SITE=%PYTHON%\lib\site-packages
+  - cmd: #FOR /F "tokens=*" %%a IN ('python -c "import sys;print('%%s.%%s.%%s' %% sys.version_info[0:3])"') do (SET PYTHON_VERSION=%%a)
+  - cmd: ECHO %PYTHON% %PYTHON_VERSION%
+build_script:
+  - cmd: pip3 install wheel setuptools pywin32 pyinstaller -U
+  - cmd: pip3 install -r requirements.txt
+  - cmd: pyinstaller --noconfirm --onefile -n find_user_one find_user.py
+  - cmd: pyinstaller --noconfirm --onedir -n find_user_dir find_user.py
+  - cmd: pyinstaller --noconfirm --onefile -n user_inv user_inv.py
+  - cmd: pyinstaller --noconfirm --onedir -n user_inv_dir user_inv.py
+after_build:
+  - cmd: mkdir output
+  - ps: Compress-Archive -DestinationPath .\output\find_user_dir.zip -Path .\dist\find_user_dir\
+  - ps: Compress-Archive -DestinationPath .\output\user_inv_dir.zip -Path .\dist\user_inv_dir\
+artifacts:
+  - path: output/*.zip
+  - path: dist/*.exe
+
+deploy:
+  release: pythonscripts-build$(appveyor_build_version)
+  description: 'Automated build by AppVeyor'
+  provider: GitHub
+  auth_token:
+    secure: MzfM6w/rSMexV46xglKehiCaceO1hLbRPG9LKDQsKUZN28JVncaufo3Mzswlmye+ # your encrypted token from GitHub
+  draft: false
+  prerelease: true
+  on:
+    branch: master                 # release from master branch only
+    APPVEYOR_REPO_TAG: true        # deploy on tag push only
+

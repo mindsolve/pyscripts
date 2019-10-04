@@ -1,0 +1,10 @@
+requests
+urllib3
+terminaltables
+colorama
+click
+# python-ldap (not easyly comilable on windows)
+python_ldap; sys_platform == 'linux'
+./wheels/python_ldap-3.2.0-cp35-cp35m-win_amd64.whl; sys_platform == 'win32' and python_version == '3.5'
+./wheels/python_ldap-3.2.0-cp37-cp37m-win_amd64.whl; sys_platform == 'win32' and python_version == '3.7'
+simple-crypt ~= 4.1.7
