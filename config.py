@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
 # This configuration file contains all confidential information
 from simplecrypt import decrypt, DecryptionException
 import sys
+import os
 import json
 import base64
 
@@ -8,12 +10,16 @@ if __name__ == '__main__':
     print('This script is not meant to be called directly.')
     sys.exit(1)
 else:
-    print("Loading encrypted configuration...")
-    try:
-        password = input("Please enter the password: ")
-    except EOFError:
-        print("Input aborted, exiting.")
-        sys.exit(1)
+    print("Loading encrypted configuration... ", end="")
+    if 'KEY' in os.environ:
+        print('Using password from ENV. ')
+        password = os.getenv('KEY')
+    else:
+        try:
+            password = input("\nPlease enter the password: ")
+        except EOFError:
+            print("Input aborted, exiting.")
+            sys.exit(1)
 
     base64_config = """c2MAAo8u0ulexmGU83VGxhxo23/vnStqZkpst5L+A7qqwJIPgnQQCICWkREFKRXOsjwJkdYoLp5O
     mRw0CIglPXBoWn+kXW0ZobZroCfhNs+DnJA0N/P0ZMgsKTwuGoHSJXrz1Tc7nBroQRMoQtYQkCs8
@@ -29,7 +35,7 @@ else:
     enc_config_bytes = base64.decodebytes(enc_config_base64_bytes)
     try:
         config_json = decrypt(password, enc_config_bytes).decode('utf8')
-        print("Decryption successful.")
+        print("Decryption successful.\n")
     except DecryptionException as e:
         print('ERROR:', e)
         sys.exit(1)
