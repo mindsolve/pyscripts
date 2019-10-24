@@ -24,7 +24,7 @@ else:
     else:
         print('Using interactive input.')
         try:
-            password = input("\nPlease enter the password: ")
+            password = input("Please enter the password: ")
         except EOFError:
             print("Input aborted, exiting.")
             sys.exit(1)
@@ -43,7 +43,7 @@ else:
     enc_config_bytes = base64.decodebytes(enc_config_base64_bytes)
     try:
         config_json = decrypt(password, enc_config_bytes).decode('utf8')
-        print("Decryption successful.\n")
+        print("Decryption successful.")
     except DecryptionException as e:
         print('ERROR:', e)
         sys.exit(1)
@@ -52,8 +52,14 @@ else:
     # This encryption is purely to protect internal data (COMPANY INTERNAL), not for actual "confidentiality"/"secrecy"
     open(os.path.join(os.path.dirname(__file__), 'config_decrypted.json'), mode="w").write(config_json)
 
-
-config_obj = json.loads(config_json)
+print()
+try:
+    config_obj = json.loads(config_json)
+except:
+    print("Error: The decrypted JSON is invalid. Something unusual went wrong.")
+    os.unlink(os.path.join(os.path.dirname(__file__), 'config_decrypted.json'))
+    print("Please try again.")
+    exit(1)
 
 # End of decryption, now assign config variables
 
