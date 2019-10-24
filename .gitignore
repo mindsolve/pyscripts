@@ -9,3 +9,6 @@ __pycache__
 
 # Encrypt config scrpt
 /encrypt_config.py
+
+# Decrypted cache file
+/config_decrypted.json
