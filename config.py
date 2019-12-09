@@ -29,15 +29,11 @@ else:
             print("Input aborted, exiting.")
             sys.exit(1)
 
-    base64_config = """c2MAAo8u0ulexmGU83VGxhxo23/vnStqZkpst5L+A7qqwJIPgnQQCICWkREFKRXOsjwJkdYoLp5O
-    mRw0CIglPXBoWn+kXW0ZobZroCfhNs+DnJA0N/P0ZMgsKTwuGoHSJXrz1Tc7nBroQRMoQtYQkCs8
-    8l4/2YuMZzcbPIPyrS6S0uDvioMFOZzpG4XyIDXvoyvCWUtRTtyiVrsXsRgC5c5ZhSo9oSrGVsBZ
-    CEnnU4dfI4E4uhYY7ogK/mEL7lfKR5+ivYpNxEqlNjKrexYdM8VBFNikEtgQZhfSYSkdJBSsLku0
-    Bo1mllsK7h2glUq/YckIUFtup+RlMUC/lqUUYZU796U+mnyYPFFFqADZVg7C4Idj6DMR6G5IaD0I
-    YDNyY4O5RyaboqiI1hOkMN8BFcKSMKJ/tGfmZRa86nomh2ok+bUO24mDl/l6lQvPEHbXVLDf80bi
-    VDSB7y0c2MHBqWHv/XxKTJbcYKtBLoojQmuY1yQejNVtyWw9cDCNCOdYNFKdybvnJ+Do+uhm4xDa
-    xVRNffAZ6ZB3yFJiub4E5PC6QgKIrVVihbXjkJfkfDVjlwqflZsxsgEODO1OVw==
-    """
+    if not os.path.isfile(os.path.join(os.path.dirname(__file__), 'config_encrypted.txt')):
+        print("Error: Encrypted config non-existent.")
+        sys.exit(1)
+
+    base64_config = open("config_encrypted.txt").read()
 
     enc_config_base64_bytes = base64_config.encode('utf8')
     enc_config_bytes = base64.decodebytes(enc_config_base64_bytes)
