@@ -35,7 +35,7 @@ l = ldap.initialize(ldap_url, bytes_mode=False)
 def bind_ldap(username, password):
     # Bind to the server
     try:
-        l.protocol_version = ldap.VERSION3 # TODO
+        l.protocol_version = ldap.VERSION3  # TODO
         l.simple_bind_s("CN={},".format(username) + user_basedn, password)
     except ldap.INVALID_CREDENTIALS:
         print("Your username or password is incorrect.")
