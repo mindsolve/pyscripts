@@ -10,15 +10,15 @@ environment:
 init:
   - cmd: SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
   - cmd: SET PYTHON_SITE=%PYTHON%\lib\site-packages
-  - cmd: #FOR /F "tokens=*" %%a IN ('python -c "import sys;print('%%s.%%s.%%s' %% sys.version_info[0:3])"') do (SET PYTHON_VERSION=%%a)
+  #- cmd: #FOR /F "tokens=*" %%a IN ('python -c "import sys;print('%%s.%%s.%%s' %% sys.version_info[0:3])"') do (SET PYTHON_VERSION=%%a)
   - cmd: ECHO %PYTHON% %PYTHON_VERSION%
 build_script:
   - cmd: pip3 install wheel setuptools pywin32 pyinstaller -U
   - cmd: pip3 install -r requirements.txt
-  - cmd: pyinstaller --noconfirm --onefile -n find_user_one find_user.py
-  - cmd: pyinstaller --noconfirm --onedir -n find_user_dir find_user.py
-  - cmd: pyinstaller --noconfirm --onefile -n user_inv user_inv.py
-  - cmd: pyinstaller --noconfirm --onedir -n user_inv_dir user_inv.py
+  - cmd: pyinstaller --noconfirm --onefile --add-data "config_encrypted.txt;config_encrypted.txt" -n find_user_one find_user.py
+  - cmd: pyinstaller --noconfirm --onedir --add-data "config_encrypted.txt;config_encrypted.txt"  -n find_user_dir find_user.py
+  - cmd: pyinstaller --noconfirm --onefile --add-data "config_encrypted.txt;config_encrypted.txt" -n user_inv_one user_inv.py
+  - cmd: pyinstaller --noconfirm --onedir --add-data "config_encrypted.txt;config_encrypted.txt"  -n user_inv_dir user_inv.py
 after_build:
   - cmd: mkdir output
   - ps: Compress-Archive -DestinationPath .\output\find_user_dir.zip -Path .\dist\find_user_dir\
