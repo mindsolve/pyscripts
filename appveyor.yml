@@ -15,10 +15,10 @@ init:
 build_script:
   - cmd: pip3 install wheel setuptools pywin32 pyinstaller -U
   - cmd: pip3 install -r requirements.txt
-  - cmd: pyinstaller --noconfirm --onefile --add-data "config_encrypted.txt;config_encrypted.txt" -n find_user_one find_user.py
-  - cmd: pyinstaller --noconfirm --onedir --add-data "config_encrypted.txt;config_encrypted.txt"  -n find_user_dir find_user.py
-  - cmd: pyinstaller --noconfirm --onefile --add-data "config_encrypted.txt;config_encrypted.txt" -n user_inv_one user_inv.py
-  - cmd: pyinstaller --noconfirm --onedir --add-data "config_encrypted.txt;config_encrypted.txt"  -n user_inv_dir user_inv.py
+  - cmd: pyinstaller --noconfirm --onefile --add-data "config_encrypted.txt;." -n find_user_one find_user.py
+  - cmd: pyinstaller --noconfirm --onedir --add-data "config_encrypted.txt;."  -n find_user_dir find_user.py
+  - cmd: pyinstaller --noconfirm --onefile --add-data "config_encrypted.txt;." -n user_inv_one user_inv.py
+  - cmd: pyinstaller --noconfirm --onedir --add-data "config_encrypted.txt;."  -n user_inv_dir user_inv.py
 after_build:
   - cmd: mkdir output
   - ps: Compress-Archive -DestinationPath .\output\find_user_dir.zip -Path .\dist\find_user_dir\
