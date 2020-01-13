@@ -269,7 +269,7 @@ def request_device_history(mac_addr, timeframe='4w', max_items=100):
                 'bytesSent': None,
                 # 'packetsReceived': None,
                 # 'packetsSent': None,
-                # 'clientIpAddress': None,
+                'clientIpAddress': None,
                 'location': None,
                 # 'protocolString': None, # Type of connection (e.g. 802.11n(5GHz))
                 'sessionStartTime': None, # millis() timestamp
@@ -305,6 +305,7 @@ def print_device_history(mac_addr, timeframe='2w', max_items=10):
                 'Session\n(End)': datetime.fromtimestamp(int(hist_item['sessionEndTime'])/1000.0).replace(microsecond=0),
                 'Session\n(Duration)': datetime.fromtimestamp(int(hist_item['sessionTime'])/1000.0).replace(microsecond=0)-datetime.fromtimestamp(0),
                 'AP Name': hist_item['apName'],
+                'Client IP': hist_item['clientIpAddress'],
                 'Location': hist_item['location'],
                 'Traffic\n(Received)': sizeof_fmt(int(hist_item['bytesReceived'])),
                 'Traffic\n(Sent)': sizeof_fmt(int(hist_item['bytesSent'])),
